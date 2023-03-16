@@ -10,13 +10,9 @@ const ContextProvider = (props) => {
   const [allData, setAllData] = useState([]);
   const [userFriends, setUserFriends] = useState([]);
   const fetchData = async () => {
-    const { data } = await axios
-      .get(
-        `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/1/${dataLength}`
-      )
-      .catch(function (error) {
-        console.log(error.toJSON());
-      });
+    const { data } = await axios.get(
+      `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/1/${dataLength}`
+    );
     if (data) {
       setAllData(data.list);
     }
@@ -43,6 +39,7 @@ const ContextProvider = (props) => {
       (window.innerHeight + window.scrollY);
     console.log(distanceToBottom);
     if (!distanceToBottom) {
+      window.scrollBy(0, -200);
       setDataLength((prev) => (prev += 4));
     }
   }
@@ -57,6 +54,7 @@ const ContextProvider = (props) => {
 
   useEffect(() => {
     if (window.location.hash) {
+      console.log(dataLength);
       fetchUsersFriends();
     } else {
       fetchData();
