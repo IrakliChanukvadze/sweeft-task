@@ -41,6 +41,7 @@ const ContextProvider = (props) => {
     const distanceToBottom =
       document.documentElement.scrollHeight -
       (window.innerHeight + window.scrollY);
+    console.log(distanceToBottom);
     if (!distanceToBottom) {
       setDataLength((prev) => (prev += 4));
     }
