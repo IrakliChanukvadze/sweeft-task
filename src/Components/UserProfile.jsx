@@ -6,14 +6,8 @@ import ProfileContainer from "./ProfileContainer";
 
 const UserProfile = () => {
   let { userId } = useParams();
-  const {
-    fetchUser,
-    fetchUsersFriends,
-    userInfo,
-    userFriends,
-    setId,
-    setDataLength,
-  } = useContext(Context);
+  const { fetchUser, fetchUsersFriends, userInfo, userFriends, setId } =
+    useContext(Context);
 
   useEffect(() => {
     setId(userId);
