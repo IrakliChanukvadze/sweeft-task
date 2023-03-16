@@ -7,9 +7,8 @@ import { Route, Routes } from "react-router-dom";
 import UserProfile from "./Components/UserProfile";
 
 function App() {
-  const { first } = useContext(Context);
   return (
-    <div className="App">
+    <div className="App pt-6">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/user/:userId" element={<UserProfile />} />
