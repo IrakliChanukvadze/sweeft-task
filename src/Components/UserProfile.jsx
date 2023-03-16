@@ -21,24 +21,6 @@ const UserProfile = () => {
     fetchUsersFriends();
   }, [userId]);
 
-  function fetchMoreData() {
-    const distanceToBottom =
-      document.documentElement.scrollHeight -
-      (window.innerHeight + window.scrollY);
-    if (distanceToBottom < 50) {
-      fetchUsersFriends(userId);
-      window.scrollBy(0, 50);
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener("scroll", fetchMoreData);
-
-    return () => {
-      window.removeEventListener("scroll", fetchMoreData);
-    };
-  }, []);
-
   return (
     <div className={`max-w-6xl w-full sm:w-[94%] m-auto gap-6 px-2`}>
       <ProfileContainer user={userInfo} adress={userInfo.adress} />
