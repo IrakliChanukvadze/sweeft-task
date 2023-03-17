@@ -18,5 +18,5 @@
 -Vite \
 -TailwindCSS \
 -React-router-dom \
--Axios \
+-Axios 
 
