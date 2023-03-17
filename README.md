@@ -7,16 +7,16 @@
 
 ### The challenge
 
--Infinite scroll logic for browsing users' list and friends' list. \
--We can not use any existing infinite scroll libraries for this project.
+- Infinite scroll logic for browsing users' list and friends' list. 
+- We can not use any existing infinite scroll libraries for this project.
 
 ## My process
 
 ### Built with
 
--React js \
--Vite \
--TailwindCSS \
--React-router-dom \
--Axios 
+- React js 
+- Vite 
+- TailwindCSS 
+- React-router-dom 
+- Axios 
 
