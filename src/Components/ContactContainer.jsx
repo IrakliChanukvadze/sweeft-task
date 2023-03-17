@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../Context/Context";
 
 const ContactContainer = ({ id, imageUrl, name, title }) => {
-  const { setDataLength, setId } = useContext(Context);
+  const { setDataLength, setId, setUserFriends } = useContext(Context);
   const navigate = useNavigate();
   return (
     <div
       className="flex flex-col gap-2 border-2 py-2 cursor-pointer"
       onClick={() => {
-        navigate(`/user/${id}`);
-        console.log("clicked from", id, name);
         window.scrollTo(0, 0);
+        setUserFriends([]);
         setId(id);
         setDataLength(20);
+        navigate(`/user/${id}`);
       }}
     >
       <img

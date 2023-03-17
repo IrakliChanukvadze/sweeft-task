@@ -9,13 +9,19 @@ const ContextProvider = (props) => {
   const [userInfo, setUserInfo] = useState([]);
   const [allData, setAllData] = useState([]);
   const [userFriends, setUserFriends] = useState([]);
+  const [page, setPage] = useState(1);
+
   const fetchData = async () => {
     const { data } = await axios.get(
-      `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/1/${dataLength}`
+      `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${page}/${dataLength}`
     );
-    if (data) {
-      setAllData(data.list);
-    }
+
+    setAllData((prev) => {
+      if (prev.some((item) => item.id === data.list[0].id)) {
+        return prev;
+      }
+      return [...prev, ...data.list];
+    });
   };
   const fetchUser = async () => {
     const { data } = await axios.get(
@@ -27,9 +33,14 @@ const ContextProvider = (props) => {
 
   const fetchUsersFriends = async () => {
     const { data } = await axios.get(
-      `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${id}/friends/1/${dataLength}`
+      `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${id}/friends/${page}/${dataLength}`
     );
-    setUserFriends(data.list);
+    setUserFriends((prev) => {
+      if (prev.some((item) => item.id === data.list[0].id)) {
+        return prev;
+      }
+      return [...prev, ...data.list];
+    });
   };
 
   function fetchMoreData() {
@@ -38,7 +49,7 @@ const ContextProvider = (props) => {
       (window.innerHeight + window.scrollY);
     if (!distanceToBottom) {
       window.scrollBy(0, -100);
-      setDataLength((prev) => (prev += 4));
+      setPage((prev) => ++prev);
     }
   }
 
@@ -52,13 +63,11 @@ const ContextProvider = (props) => {
 
   useEffect(() => {
     if (window.location.hash) {
-      console.log("entered", dataLength);
       fetchUsersFriends();
     } else {
-      console.log("ent");
       fetchData();
     }
-  }, [dataLength]);
+  }, [page]);
 
   return (
     <Context.Provider
@@ -71,6 +80,7 @@ const ContextProvider = (props) => {
         fetchUsersFriends,
         setDataLength,
         fetchData,
+        setUserFriends,
       }}
     >
       {props.children}
