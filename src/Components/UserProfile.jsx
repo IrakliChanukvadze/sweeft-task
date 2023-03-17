@@ -6,8 +6,14 @@ import ProfileContainer from "./ProfileContainer";
 
 const UserProfile = () => {
   let { userId } = useParams();
-  const { fetchUser, fetchUsersFriends, userInfo, userFriends, setId } =
-    useContext(Context);
+  const {
+    fetchUser,
+    fetchUsersFriends,
+    userInfo,
+    userFriends,
+    setId,
+    lastUserRef,
+  } = useContext(Context);
 
   useEffect(() => {
     setId(userId);
@@ -20,15 +26,29 @@ const UserProfile = () => {
       <ProfileContainer user={userInfo} adress={userInfo.adress} />
       <h2 className="font-bold mt-14">Friends: </h2>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-6 ">
-        {userFriends.map((item) => (
-          <ContactContainer
-            key={item.id}
-            id={item.id}
-            name={`${item.prefix} ${item.name} ${item.lastName}`}
-            title={item.title}
-            imageUrl={item.imageUrl}
-          />
-        ))}
+        {userFriends.map((item, index) => {
+          if (userFriends.length === index + 1) {
+            return (
+              <ContactContainer
+                lastUserRef={lastUserRef}
+                key={item.id}
+                id={item.id}
+                name={`${item.prefix} ${item.name} ${item.lastName}`}
+                title={item.title}
+                imageUrl={item.imageUrl}
+              />
+            );
+          }
+          return (
+            <ContactContainer
+              key={item.id}
+              id={item.id}
+              name={`${item.prefix} ${item.name} ${item.lastName}`}
+              title={item.title}
+              imageUrl={item.imageUrl}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -1,15 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 const Context = React.createContext();
 
 const ContextProvider = (props) => {
+  const observationRef = useRef();
   const [dataLength, setDataLength] = useState(20);
   const [id, setId] = useState(1);
   const [userInfo, setUserInfo] = useState([]);
   const [allData, setAllData] = useState([]);
   const [userFriends, setUserFriends] = useState([]);
   const [page, setPage] = useState(1);
+  const lastUserRef = useCallback((node) => {
+    if (observationRef.current) observationRef.current.disconnect();
+    console.log(page);
+    observationRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          window.scrollBy(0, -100);
+          setPage((prev) => ++prev);
+        }
+      },
+      { threshold: 1 }
+    );
+    if (node) observationRef.current.observe(node);
+  });
 
   const fetchData = async () => {
     const { data } = await axios.get(
@@ -43,25 +58,8 @@ const ContextProvider = (props) => {
     });
   };
 
-  function fetchMoreData() {
-    const distanceToBottom =
-      document.documentElement.scrollHeight -
-      (window.innerHeight + window.scrollY);
-    if (!distanceToBottom) {
-      window.scrollBy(0, -100);
-      setPage((prev) => ++prev);
-    }
-  }
-
   useEffect(() => {
-    window.addEventListener("scroll", fetchMoreData);
-
-    return () => {
-      window.removeEventListener("scroll", fetchMoreData);
-    };
-  }, []);
-
-  useEffect(() => {
+    if (observationRef.current) observationRef.current.disconnect();
     if (window.location.hash) {
       fetchUsersFriends();
     } else {
@@ -81,6 +79,7 @@ const ContextProvider = (props) => {
         setDataLength,
         fetchData,
         setUserFriends,
+        lastUserRef,
       }}
     >
       {props.children}

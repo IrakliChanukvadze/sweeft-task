@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileContainer = ({ user, adress }) => {
+const ProfileContainer = ({ user }) => {
   const userInfo = [
     {
       title: "Full Name",
