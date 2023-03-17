@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Context = React.createContext();
 
 const ContextProvider = (props) => {
   const observationRef = useRef();
+  let location = useLocation();
   const [dataLength, setDataLength] = useState(20);
   const [id, setId] = useState(1);
   const [userInfo, setUserInfo] = useState([]);
@@ -60,10 +62,10 @@ const ContextProvider = (props) => {
 
   useEffect(() => {
     if (observationRef.current) observationRef.current.disconnect();
-    if (window.location.hash) {
-      fetchUsersFriends();
-    } else {
+    if (location.pathname === "/") {
       fetchData();
+    } else {
+      fetchUsersFriends();
     }
   }, [page]);
 
